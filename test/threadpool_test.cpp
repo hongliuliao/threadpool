@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
   ThreadPool tp(2);
   int ret = tp.initialize_threadpool();
   if (ret == -1) {
-    cerr << "Failed to initialize thread pool!" << endl;
+    LOG_ERROR("Failed to initialize thread pool!");
     return 0;
   }
 
