@@ -65,7 +65,6 @@ public:
 //  Task(TCLass::* obj_fn_ptr); // pass an object method pointer
   Task(void (*fn_ptr)(void*), void* arg); // pass a free function pointer
   ~Task();
-  void operator()();
   void run();
 private:
 //  TClass* _obj_fn_ptr;
@@ -76,7 +75,6 @@ private:
 class ThreadPool
 {
 public:
-  ThreadPool();
   ThreadPool(int pool_size);
   ~ThreadPool();
   int initialize_threadpool();

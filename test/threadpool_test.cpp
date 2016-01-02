@@ -1,16 +1,13 @@
 #include "threadpool.h"
-
-#include <iostream>
-
-using namespace std;
+#include "simple_log.h"
 
 const int MAX_TASKS = 4;
 
 void hello(void* arg)
 {
   int* x = (int*) arg;
-  cout << "Hello " << *x << endl;
-//  cout << "\n";
+  LOG_INFO("Hello %d", *x);
+  delete (int *)arg;
 }
 
 int main(int argc, char* argv[])
@@ -26,18 +23,14 @@ int main(int argc, char* argv[])
     int* x = new int();
     *x = i+1;
     Task* t = new Task(&hello, (void*) x);
-//    cout << "Adding to pool, task " << i+1 << endl;
     tp.add_task(t);
-//    cout << "Added to pool, task " << i+1 << endl;
   }
 
   sleep(2);
 
   tp.destroy_threadpool();
 
-  // TODO: delete worker objects
-
-  cout << "Exiting app..." << endl;
+  LOG_INFO("Exiting app...");
 
   return 0;
 }
