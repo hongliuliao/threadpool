@@ -70,9 +70,9 @@ private:
 class ThreadPool
 {
 public:
-  ThreadPool(int pool_size);
+  ThreadPool();
   ~ThreadPool();
-  int initialize_threadpool();
+  int init(int pool_size);
   int destroy_threadpool();
   void* execute_thread();
   int add_task(Task* task);

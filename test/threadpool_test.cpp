@@ -12,8 +12,8 @@ void hello(void* arg)
 
 int main(int argc, char* argv[])
 {
-  ThreadPool tp(2);
-  int ret = tp.initialize_threadpool();
+  ThreadPool tp;
+  int ret = tp.init(2);
   if (ret == -1) {
     LOG_ERROR("Failed to initialize thread pool!");
     return 0;

@@ -17,10 +17,7 @@ void Task::run()
   (*m_fn_ptr)(m_arg);
 }
 
-ThreadPool::ThreadPool(int pool_size) : m_pool_size(pool_size)
-{
-    LOG_INFO("Constructed ThreadPool of size %d", m_pool_size);
-}
+ThreadPool::ThreadPool() {}
 
 ThreadPool::~ThreadPool()
 {
@@ -41,22 +38,23 @@ void* start_thread(void* arg)
   return NULL;
 }
 
-int ThreadPool::initialize_threadpool()
+int ThreadPool::init(int pool_size)
 {
-  m_pool_state = STARTED;
-  int ret = -1;
-  for (int i = 0; i < m_pool_size; i++) {
-    pthread_t tid;
-    ret = pthread_create(&tid, NULL, start_thread, (void*) this);
-    if (ret != 0) {
-      LOG_ERROR("pthread_create() failed: %d", ret);
-      return -1;
+    m_pool_size = pool_size;
+    m_pool_state = STARTED;
+    int ret = -1;
+    for (int i = 0; i < m_pool_size; i++) {
+        pthread_t tid;
+        ret = pthread_create(&tid, NULL, start_thread, (void*) this);
+        if (ret != 0) {
+            LOG_ERROR("pthread_create() failed: %d", ret);
+            return -1;
+        }
+        m_threads.push_back(tid);
     }
-    m_threads.push_back(tid);
-  }
-  LOG_INFO("%d threads created by the thread pool", m_pool_size);
+    LOG_INFO("%d threads created by the thread pool", m_pool_size);
 
-  return 0;
+    return 0;
 }
 
 int ThreadPool::destroy_threadpool()
